@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2019",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,9 +23,26 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
-    }
+      "@/*": [
+        "./*"
+      ]
+    },
+    "noEmit": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "scripts/generate-folder-structure.js", "scripts/generate-folder-structure.esm", "scripts/generate-folder-structure.js", "scripts/generate-folder-structure.mjs", "scripts/toJsonSchema.ts", "scripts/generate_search_params.ts", "db/schema/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "scripts/generate-folder-structure.js",
+    "scripts/generate-folder-structure.esm",
+    "scripts/generate-folder-structure.js",
+    "scripts/generate-folder-structure.mjs",
+    "scripts/toJsonSchema.ts",
+    "scripts/generate_search_params.ts",
+    "db/schema/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

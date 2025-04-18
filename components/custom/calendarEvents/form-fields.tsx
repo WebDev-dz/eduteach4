@@ -1,405 +1,229 @@
 import { FormFields } from "@/types/ui";
 import { defaultValues } from "@/lib/consts";
-import { FormField, FormItem, FormLabel, FormDescription, FormMessage, FormControl } from "@/components/ui";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
+import React from "react";
+import { BaseInputProps, StringInput, SelectInput, NumberInput, TextInput, CheckboxInput, DateInput } from "../form-inputs";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
+interface calendarEventsFieldProps extends BaseInputProps {
+  data?: {[key in keyof EntityFormData]?: EntityFormData[key]};
+}
 type EntityFormData = typeof defaultValues.calendarEvents.insert;
 
-const calendarEventsFields: Omit<FormFields<EntityFormData>, "IdField | ClassIdField | AssignmentIdField | LessonPlanIdField | TeacherIdField"> = {
-
-    TitleField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="title">Title</FormLabel>
-                <FormControl>
-                  <Input
-                    id="title"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter title"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    DescriptionField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="description">Description</FormLabel>
-                <FormControl>
-                  <Textarea
-                    id="description"
-                    rows="3"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter description"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    StartDateField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="startDate"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="startDate">StartDate</FormLabel>
-                <FormControl>
-                  <Input
-                    id="startDate"
-                    type="date"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter startDate"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    EndDateField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="endDate"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="endDate">EndDate</FormLabel>
-                <FormControl>
-                  <Input
-                    id="endDate"
-                    type="date"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter endDate"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    AllDayField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="allDay"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <FormControl>
-                    <Checkbox
-                      id="allDay"
-                      checked={field.value ?? false}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel htmlFor="allDay">AllDay</FormLabel>
-                </div>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    LocationField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="location"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="location">Location</FormLabel>
-                <FormControl>
-                  <Input
-                    id="location"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter location"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    TypeField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="type"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="type">Type</FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger id="type">
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      
-            <SelectItem value="class">Class</SelectItem>
-                      
-            <SelectItem value="assignment">Assignment</SelectItem>
-                      
-            <SelectItem value="exam">Exam</SelectItem>
-                      
-            <SelectItem value="meeting">Meeting</SelectItem>
-                      
-            <SelectItem value="personal">Personal</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    ColorField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="color"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="color">Color</FormLabel>
-                <FormControl>
-                  <Input
-                    id="color"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter color"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    RecurrenceRuleField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="recurrenceRule"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="recurrenceRule">RecurrenceRule</FormLabel>
-                <FormControl>
-                  <Input
-                    id="recurrenceRule"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter recurrenceRule"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    IsRecurringField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="isRecurring"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <FormControl>
-                    <Checkbox
-                      id="isRecurring"
-                      checked={field.value ?? false}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel htmlFor="isRecurring">IsRecurring</FormLabel>
-                </div>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    VisibilityField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="visibility"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="visibility">Visibility</FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger id="visibility">
-                      <SelectValue placeholder="Select visibility" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      
-            <SelectItem value="public">Public</SelectItem>
-                      
-            <SelectItem value="private">Private</SelectItem>
-                      
-            <SelectItem value="organization">Organization</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    RemindersField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="reminders"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="reminders">Reminders</FormLabel>
-                <FormControl>
-                  <Textarea
-                    id="reminders"
-                    rows="3"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter reminders"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    CreatedAtField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="createdAt"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="createdAt">CreatedAt</FormLabel>
-                <FormControl>
-                  <Input
-                    id="createdAt"
-                    type="date"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter createdAt"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    UpdatedAtField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="updatedAt"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="updatedAt">UpdatedAt</FormLabel>
-                <FormControl>
-                  <Input
-                    id="updatedAt"
-                    type="date"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter updatedAt"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    EnableRLSField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="enableRLS"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="enableRLS">EnableRLS</FormLabel>
-                <FormControl>
-                  <Input
-                    id="enableRLS"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter enableRLS"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
+const calendarEventsForm = () => {
+  return;
 };
 
-// Export all individual fields for direct imports
-export const {
-  TitleField,
-  DescriptionField,
-  StartDateField,
-  EndDateField,
-  AllDayField,
-  LocationField,
-  TypeField,
-  ColorField,
-  RecurrenceRuleField,
-  IsRecurringField,
-  VisibilityField,
-  RemindersField,
-  CreatedAtField,
-  UpdatedAtField,
-  EnableRLSField,
-} = calendarEventsFields;
+
+        const TitleField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="title" 
+            label="Title"
+            placeholder="Enter title"
+            
+            />
+        );
+        };
+        TitleField.displayName = "calendarEventsForm.TitleField";
+        calendarEventsForm.TitleField = TitleField;
+    
+
+        const DescriptionField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <TextInput 
+            form={form} 
+            name="description" 
+            label="Description"
+            placeholder="Enter description"
+            rows={3}
+          />
+        );
+        };
+        DescriptionField.displayName = "calendarEventsForm.DescriptionField";
+        calendarEventsForm.DescriptionField = DescriptionField;
+    
+
+        const StartDateField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <DateInput 
+          form={form} 
+          name="startDate" 
+          label="StartDate"
+        />
+        );
+        };
+        StartDateField.displayName = "calendarEventsForm.StartDateField";
+        calendarEventsForm.StartDateField = StartDateField;
+    
+
+        const EndDateField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <DateInput 
+          form={form} 
+          name="endDate" 
+          label="EndDate"
+        />
+        );
+        };
+        EndDateField.displayName = "calendarEventsForm.EndDateField";
+        calendarEventsForm.EndDateField = EndDateField;
+    
+
+        const AllDayField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <CheckboxInput 
+            form={form} 
+            name="allDay" 
+            label="AllDay"
+          />
+        );
+        };
+        AllDayField.displayName = "calendarEventsForm.AllDayField";
+        calendarEventsForm.AllDayField = AllDayField;
+    
+
+        const LocationField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="location" 
+            label="Location"
+            placeholder="Enter location"
+            
+            />
+        );
+        };
+        LocationField.displayName = "calendarEventsForm.LocationField";
+        calendarEventsForm.LocationField = LocationField;
+    
+
+        const TypeField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <SelectInput
+            form={form}
+            name="type"
+            label="Type"
+            options={[{ value: "class", label: "Class" }, { value: "assignment", label: "Assignment" }, { value: "exam", label: "Exam" }, { value: "meeting", label: "Meeting" }, { value: "personal", label: "Personal" }]}
+            placeholder="Select type"
+          />
+        );
+        };
+        TypeField.displayName = "calendarEventsForm.TypeField";
+        calendarEventsForm.TypeField = TypeField;
+    
+
+        const ColorField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="color" 
+            label="Color"
+            placeholder="Enter color"
+            
+            />
+        );
+        };
+        ColorField.displayName = "calendarEventsForm.ColorField";
+        calendarEventsForm.ColorField = ColorField;
+    
+
+        const RecurrenceRuleField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="recurrenceRule" 
+            label="RecurrenceRule"
+            placeholder="Enter recurrenceRule"
+            
+            />
+        );
+        };
+        RecurrenceRuleField.displayName = "calendarEventsForm.RecurrenceRuleField";
+        calendarEventsForm.RecurrenceRuleField = RecurrenceRuleField;
+    
+
+        const IsRecurringField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <CheckboxInput 
+            form={form} 
+            name="isRecurring" 
+            label="IsRecurring"
+          />
+        );
+        };
+        IsRecurringField.displayName = "calendarEventsForm.IsRecurringField";
+        calendarEventsForm.IsRecurringField = IsRecurringField;
+    
+
+        const VisibilityField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <SelectInput
+            form={form}
+            name="visibility"
+            label="Visibility"
+            options={[{ value: "public", label: "Public" }, { value: "private", label: "Private" }, { value: "organization", label: "Organization" }]}
+            placeholder="Select visibility"
+          />
+        );
+        };
+        VisibilityField.displayName = "calendarEventsForm.VisibilityField";
+        calendarEventsForm.VisibilityField = VisibilityField;
+    
+
+        const RemindersField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <TextInput 
+            form={form} 
+            name="reminders" 
+            label="Reminders"
+            placeholder="Enter reminders"
+            rows={3}
+          />
+        );
+        };
+        RemindersField.displayName = "calendarEventsForm.RemindersField";
+        calendarEventsForm.RemindersField = RemindersField;
+    
+
+        const CreatedAtField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <DateInput 
+          form={form} 
+          name="createdAt" 
+          label="CreatedAt"
+        />
+        );
+        };
+        CreatedAtField.displayName = "calendarEventsForm.CreatedAtField";
+        calendarEventsForm.CreatedAtField = CreatedAtField;
+    
+
+        const UpdatedAtField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <DateInput 
+          form={form} 
+          name="updatedAt" 
+          label="UpdatedAt"
+        />
+        );
+        };
+        UpdatedAtField.displayName = "calendarEventsForm.UpdatedAtField";
+        calendarEventsForm.UpdatedAtField = UpdatedAtField;
+    
+
+        const EnableRLSField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="enableRLS" 
+            label="EnableRLS"
+            placeholder="Enter enableRLS"
+            
+            />
+        );
+        };
+        EnableRLSField.displayName = "calendarEventsForm.EnableRLSField";
+        calendarEventsForm.EnableRLSField = EnableRLSField;
+    
+
+export default calendarEventsForm;

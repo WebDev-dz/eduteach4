@@ -22,57 +22,57 @@ function writeFile(filePath, content) {
 // Generic function to format display values
 function formatDisplayValue(value, columnName) {
   if (typeof value !== 'string') return value;
-  
+
   if (value.includes('_')) {
     return value
       .split('_')
       .map((s) => s[0].toUpperCase() + s.slice(1))
       .join(' ');
   }
-  
+
   if (columnName === 'gradeLevel') {
     return `Grade ${value}`;
   }
-  
+
   return value[0].toUpperCase() + value.slice(1);
 }
 
 // Map database column types to UI components
 const fieldTypeMap = {
-  text: { component: "Input", props: { type: "text" } },
-  varchar: { component: "Input", props: { type: "text" } },
-  integer: { component: "Input", props: { type: "number", min: "0" } },
-  bigint: { component: "Input", props: { type: "number", min: "0" } },
-  float: { component: "Input", props: { type: "number", step: "0.01" } },
-  boolean: { component: "Checkbox", props: {} },
-  timestamp: { component: "Input", props: { type: "datetime-local" } },
-  date: { component: "Input", props: { type: "date" } },
-  json: { component: "Textarea", props: { rows: 3 } },
+  text: { component: "StringInput", props: { } },
+  varchar: { component: "StringInput", props: {} },
+  integer: { component: "NumberInput", props: { min: "0" } },
+  bigint: { component: "NumberInput", props: { min: "0" } },
+  float: { component: "NumberInput", props: { step: "0.01" } },
+  boolean: { component: "CheckboxInput", props: {} },
+  timestamp: { component: "DateInput", props: {} },
+  date: { component: "DateInput", props: {} },
+  json: { component: "TextInput", props: { rows: 3 } },
 };
 
 // Global special fields (apply to all entities)
 const globalSpecialFields = {
-  description: { component: "Textarea", props: { rows: 3 } },
-  name: { component: "Input", props: { type: "text" } },
-  isActive: { component: "Checkbox", props: {} },
-  email: { component: "Input", props: { type: "email" } },
+  description: { component: "TextInput", props: { rows: 3 } },
+  name: { component: "StringInput", props: {} },
+  isActive: { component: "CheckboxInput", props: {} },
+  email: { component: "StringInput", props: { } },
 };
 
 // Common field patterns
 const specialFieldPatterns = {
   // Fields ending with these suffixes get special treatment
   endsWith: {
-    'email': { component: "Input", props: { type: "email" } },
-    'description': { component: "Textarea", props: { rows: 3 } },
-    'notes': { component: "Textarea", props: { rows: 3 } },
-    'content': { component: "Textarea", props: { rows: 5 } },
-    'date': { component: "Input", props: { type: "date" } },
+    'email': { component: "StringInput", props: {  } },
+    'description': { component: "TextInput", props: { rows: 3 } },
+    'notes': { component: "TextInput", props: { rows: 3 } },
+    'content': { component: "TextInput", props: { rows: 5 } },
+    'date': { component: "DateInput", props: {} },
   },
   // Fields containing these strings get special treatment
   contains: {
-    'password': { component: "Input", props: { type: "password" } },
-    'phone': { component: "Input", props: { type: "tel" } },
-    'url': { component: "Input", props: { type: "url" } },
+    'password': { component: "StringInput", props: {} },
+    'phone': { component: "StringInput", props: { } },
+    'url': { component: "StringInput", props: { } },
   }
 };
 
@@ -99,43 +99,43 @@ const knownEnumOptions = {
 function getFieldComponent(columnName, column, entityName) {
   // First check for enum values in the column
   if (column.enumValues) {
-    return { 
-      component: "Select", 
-      props: {}, 
-      options: column.enumValues 
+    return {
+      component: "SelectInput",
+      props: {},
+      options: column.enumValues
     };
   }
-  
+
   // Check if it's a known enum field
   const normalizedName = columnName.toLowerCase();
   for (const [enumName, options] of Object.entries(knownEnumOptions)) {
     if (normalizedName === enumName || normalizedName === `${enumName.toLowerCase()}id`) {
-      return { 
-        component: "Select", 
-        props: {}, 
-        options: options 
+      return {
+        component: "SelectInput",
+        props: {},
+        options: options
       };
     }
   }
-  
+
   // Check global special fields
   if (globalSpecialFields[columnName]) {
     return globalSpecialFields[columnName];
   }
-  
+
   // Check for pattern matching fields
   for (const [suffix, config] of Object.entries(specialFieldPatterns.endsWith)) {
     if (normalizedName.endsWith(suffix.toLowerCase())) {
       return config;
     }
   }
-  
+
   for (const [pattern, config] of Object.entries(specialFieldPatterns.contains)) {
     if (normalizedName.includes(pattern.toLowerCase())) {
       return config;
     }
   }
-  
+
   // Map based on column type
   return fieldTypeMap[column.dataType] || fieldTypeMap.text; // Default to text input
 }
@@ -158,7 +158,8 @@ function generateFormFields(entityName, columns) {
   const imports = new Set([
     `import { FormFields } from "@/types/ui";`,
     `import { defaultValues } from "@/lib/consts";`,
-    `import { FormField, FormItem, FormLabel, FormDescription, FormMessage, FormControl } from "@/components/ui";`,
+    `import React from "react";` ,
+    `import { BaseInputProps, StringInput, SelectInput, NumberInput, TextInput, CheckboxInput, DateInput } from "../form-inputs";`,
   ]);
 
   // Track used components
@@ -170,181 +171,114 @@ function generateFormFields(entityName, columns) {
       const column = columns[columnName];
       const fieldName =
         columnName[0].toUpperCase() + columnName.slice(1) + "Field";
-      
+
       // Get appropriate field configuration
       const fieldConfig = getFieldComponent(columnName, column, entityName);
-      
+
       componentsUsed.add(fieldConfig.component);
 
       // Generate field component
       let fieldContent = "";
-      if (fieldConfig.component === "Input") {
+     if (fieldConfig.component === "StringInput") {
         fieldContent = `
-          <FormField
-            control={form.control}
-            name="${columnName}"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="${columnName}">${
-          columnName[0].toUpperCase() + columnName.slice(1)
-        }</FormLabel>
-                <FormControl>
-                  <Input
-                    id="${columnName}"
-                    ${Object.entries(fieldConfig.props)
-                      .map(([key, value]) => `${key}="${value}"`)
-                      .join(" ")}
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter ${columnName}"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
+          <StringInput 
+            form={form} 
+            name="${columnName}" 
+            label="${columnName[0].toUpperCase() + columnName.slice(1)}"
+            placeholder="Enter ${columnName}"
+            ${Object.entries(fieldConfig.props)
+              .map(([key, value]) => `${key}={${JSON.stringify(value)}}`)
+              .join(" ")}
+            />
+        `;
+      } else if (fieldConfig.component === "TextInput") {
+        fieldContent = `
+        <TextInput 
+            form={form} 
+            name="${columnName}" 
+            label="${columnName[0].toUpperCase() + columnName.slice(1)}"
+            placeholder="Enter ${columnName}"
+            ${Object.entries(fieldConfig.props)
+              .map(([key, value]) => `${key}={${JSON.stringify(value)}}`)
+              .join(" ")}
           />
         `;
-      } else if (fieldConfig.component === "Textarea") {
+      } else if (fieldConfig.component === "CheckboxInput") {
         fieldContent = `
-          <FormField
-            control={form.control}
-            name="${columnName}"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="${columnName}">${
-          columnName[0].toUpperCase() + columnName.slice(1)
-        }</FormLabel>
-                <FormControl>
-                  <Textarea
-                    id="${columnName}"
-                    ${Object.entries(fieldConfig.props)
-                      .map(([key, value]) => `${key}="${value}"`)
-                      .join(" ")}
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter ${columnName}"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
+          <CheckboxInput 
+            form={form} 
+            name="${columnName}" 
+            label="${columnName[0].toUpperCase() + columnName.slice(1)}"
           />
         `;
-      } else if (fieldConfig.component === "Checkbox") {
-        fieldContent = `
-          <FormField
-            control={form.control}
-            name="${columnName}"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <FormControl>
-                    <Checkbox
-                      id="${columnName}"
-                      checked={field.value ?? false}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel htmlFor="${columnName}">${
-          columnName[0].toUpperCase() + columnName.slice(1)
-        }</FormLabel>
-                </div>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        `;
-      } else if (fieldConfig.component === "Select") {
+      } else if (fieldConfig.component === "SelectInput") {
         const selectItems = (fieldConfig.options || []).map((value) => {
           // Format display value dynamically
           const displayValue = formatDisplayValue(value, columnName);
-          return `
-            <SelectItem value="${value}">${displayValue}</SelectItem>`;
+          return `{ value: "${value}", label: "${displayValue}" }`;
         });
-
         fieldContent = `
-          <FormField
-            control={form.control}
+         <SelectInput
+            form={form}
             name="${columnName}"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="${columnName}">${
-          columnName[0].toUpperCase() + columnName.slice(1)
-        }</FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger id="${columnName}">
-                      <SelectValue placeholder="Select ${columnName}" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      ${selectItems.join("\n                      ")}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
+            label="${columnName[0].toUpperCase() + columnName.slice(1)}"
+            options={[${selectItems.join(", ")}]}
+            placeholder="Select ${columnName}"
           />
         `;
+      } else if (fieldConfig.component === "NumberInput") {
+        fieldContent = `
+          <NumberInput 
+            form={form} 
+            name="${columnName}" 
+            label="${columnName[0].toUpperCase() + columnName.slice(1)}"
+            placeholder="Enter ${columnName}"
+            ${Object.entries(fieldConfig.props)
+              .map(([key, value]) => `${key}={${JSON.stringify(value)}}`)
+              .join(" ")}
+          />
+        `;
+      } else if (fieldConfig.component === "DateInput") {
+        fieldContent = `
+        <DateInput 
+          form={form} 
+          name="${columnName}" 
+          label="${columnName[0].toUpperCase() + columnName.slice(1)}"
+        />
+      `;
       }
 
       return `
-    ${fieldName}: ({ form, data }): React.ReactNode => {
-      return (${fieldContent.trim()});
-    },`;
+        const ${fieldName} = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            ${fieldContent.trim()}
+        );
+        };
+        ${fieldName}.displayName = "${entityName}Form.${fieldName}";
+        ${entityName}Form.${fieldName} = ${fieldName};
+    `;
     })
     .join("\n");
 
   // Add component imports based on usage
-  if (componentsUsed.has("Input")) {
-    imports.add(`import { Input } from "@/components/ui/input";`);
-  }
-  if (componentsUsed.has("Textarea")) {
-    imports.add(`import { Textarea } from "@/components/ui/textarea";`);
-  }
-  if (componentsUsed.has("Checkbox")) {
-    imports.add(`import { Checkbox } from "@/components/ui/checkbox";`);
-  }
-  if (componentsUsed.has("Select")) {
+ if (componentsUsed.has("StringInput") || componentsUsed.has("TextInput") || componentsUsed.has("NumberInput") || componentsUsed.has("SelectInput") || componentsUsed.has("CheckboxInput") || componentsUsed.has("DateInput")) {
     imports.add(`
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";`);
+interface ${entityName}FieldProps extends BaseInputProps {
+  data?: {[key in keyof EntityFormData]?: EntityFormData[key]};
+}`);
   }
-
   // Generate the file content
   const content = `
 ${Array.from(imports).join("\n")}
-
 type EntityFormData = typeof defaultValues.${entityName}.insert;
 
-const ${entityName}Fields: ${
-    foreignKeys.length > 0
-      ? `Omit<FormFields<EntityFormData>, "${foreignKeys
-          .map((fk) => fk[0].toUpperCase() + fk.slice(1) + "Field")
-          .join(' | ')}">`
-      : "FormFields<EntityFormData>"
-  } = {
-${fieldComponents}
+const ${entityName}Form = () => {
+  return;
 };
 
-// Export all individual fields for direct imports
-export const {
-${formFieldKeys
-  .map((col) => `  ${col[0].toUpperCase() + col.slice(1)}Field`)
-  .join(",\n")},
-} = ${entityName}Fields;
+${fieldComponents}
+
+export default ${entityName}Form;
 `;
 
   // Write the file
@@ -358,9 +292,9 @@ Object.entries(tables).forEach(([entityName, table]) => {
   if (entityName.endsWith("Enum")) return;
 
   // Get columns from the schema
-//   const columns = tab || {};
-  
-//   console.log(table._.)
+  //   const columns = tab || {};
+
+  //   console.log(table._.)
   // Skip if no columns and no schema (avoid defaulting to mockColumns)
   if (Object.keys(table).length === 0) {
     console.log(`⚠️ Skipping ${entityName}: No columns defined`);

@@ -1,320 +1,188 @@
 import { FormFields } from "@/types/ui";
 import { defaultValues } from "@/lib/consts";
-import { FormField, FormItem, FormLabel, FormDescription, FormMessage, FormControl } from "@/components/ui";
-import { Input } from "@/components/ui/input";
+import React from "react";
+import { BaseInputProps, StringInput, SelectInput, NumberInput, TextInput, CheckboxInput, DateInput } from "../form-inputs";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
+interface usersFieldProps extends BaseInputProps {
+  data?: {[key in keyof EntityFormData]?: EntityFormData[key]};
+}
 type EntityFormData = typeof defaultValues.users.insert;
 
-const usersFields: Omit<FormFields<EntityFormData>, "IdField | StripeCustomerIdField | OrganizationIdField"> = {
-
-    NameField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="name">Name</FormLabel>
-                <FormControl>
-                  <Input
-                    id="name"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter name"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    EmailField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="email">Email</FormLabel>
-                <FormControl>
-                  <Input
-                    id="email"
-                    type="email"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter email"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    EmailVerifiedField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="emailVerified"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="emailVerified">EmailVerified</FormLabel>
-                <FormControl>
-                  <Input
-                    id="emailVerified"
-                    type="date"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter emailVerified"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    ImageField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="image"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="image">Image</FormLabel>
-                <FormControl>
-                  <Input
-                    id="image"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter image"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    FirstNameField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="firstName"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="firstName">FirstName</FormLabel>
-                <FormControl>
-                  <Input
-                    id="firstName"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter firstName"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    LastNameField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="lastName"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="lastName">LastName</FormLabel>
-                <FormControl>
-                  <Input
-                    id="lastName"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter lastName"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    PasswordHashField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="passwordHash"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="passwordHash">PasswordHash</FormLabel>
-                <FormControl>
-                  <Input
-                    id="passwordHash"
-                    type="password"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter passwordHash"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    RoleField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="role"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="role">Role</FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger id="role">
-                      <SelectValue placeholder="Select role" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      
-            <SelectItem value="teacher">Teacher</SelectItem>
-                      
-            <SelectItem value="admin">Admin</SelectItem>
-                      
-            <SelectItem value="department_head">Department Head</SelectItem>
-                      
-            <SelectItem value="school_admin">School Admin</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    CreatedAtField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="createdAt"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="createdAt">CreatedAt</FormLabel>
-                <FormControl>
-                  <Input
-                    id="createdAt"
-                    type="date"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter createdAt"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    UpdatedAtField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="updatedAt"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="updatedAt">UpdatedAt</FormLabel>
-                <FormControl>
-                  <Input
-                    id="updatedAt"
-                    type="date"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter updatedAt"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    LastLoginAtField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="lastLoginAt"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="lastLoginAt">LastLoginAt</FormLabel>
-                <FormControl>
-                  <Input
-                    id="lastLoginAt"
-                    type="date"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter lastLoginAt"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    EnableRLSField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="enableRLS"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="enableRLS">EnableRLS</FormLabel>
-                <FormControl>
-                  <Input
-                    id="enableRLS"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter enableRLS"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
+const usersForm = () => {
+  return;
 };
 
-// Export all individual fields for direct imports
-export const {
-  NameField,
-  EmailField,
-  EmailVerifiedField,
-  ImageField,
-  FirstNameField,
-  LastNameField,
-  PasswordHashField,
-  RoleField,
-  CreatedAtField,
-  UpdatedAtField,
-  LastLoginAtField,
-  EnableRLSField,
-} = usersFields;
+
+        const NameField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="name" 
+            label="Name"
+            placeholder="Enter name"
+            
+            />
+        );
+        };
+        NameField.displayName = "usersForm.NameField";
+        usersForm.NameField = NameField;
+    
+
+        const EmailField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="email" 
+            label="Email"
+            placeholder="Enter email"
+            
+            />
+        );
+        };
+        EmailField.displayName = "usersForm.EmailField";
+        usersForm.EmailField = EmailField;
+    
+
+        const EmailVerifiedField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <DateInput 
+          form={form} 
+          name="emailVerified" 
+          label="EmailVerified"
+        />
+        );
+        };
+        EmailVerifiedField.displayName = "usersForm.EmailVerifiedField";
+        usersForm.EmailVerifiedField = EmailVerifiedField;
+    
+
+        const ImageField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="image" 
+            label="Image"
+            placeholder="Enter image"
+            
+            />
+        );
+        };
+        ImageField.displayName = "usersForm.ImageField";
+        usersForm.ImageField = ImageField;
+    
+
+        const FirstNameField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="firstName" 
+            label="FirstName"
+            placeholder="Enter firstName"
+            
+            />
+        );
+        };
+        FirstNameField.displayName = "usersForm.FirstNameField";
+        usersForm.FirstNameField = FirstNameField;
+    
+
+        const LastNameField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="lastName" 
+            label="LastName"
+            placeholder="Enter lastName"
+            
+            />
+        );
+        };
+        LastNameField.displayName = "usersForm.LastNameField";
+        usersForm.LastNameField = LastNameField;
+    
+
+        const PasswordHashField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="passwordHash" 
+            label="PasswordHash"
+            placeholder="Enter passwordHash"
+            
+            />
+        );
+        };
+        PasswordHashField.displayName = "usersForm.PasswordHashField";
+        usersForm.PasswordHashField = PasswordHashField;
+    
+
+        const RoleField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <SelectInput
+            form={form}
+            name="role"
+            label="Role"
+            options={[{ value: "teacher", label: "Teacher" }, { value: "admin", label: "Admin" }, { value: "department_head", label: "Department Head" }, { value: "school_admin", label: "School Admin" }]}
+            placeholder="Select role"
+          />
+        );
+        };
+        RoleField.displayName = "usersForm.RoleField";
+        usersForm.RoleField = RoleField;
+    
+
+        const CreatedAtField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <DateInput 
+          form={form} 
+          name="createdAt" 
+          label="CreatedAt"
+        />
+        );
+        };
+        CreatedAtField.displayName = "usersForm.CreatedAtField";
+        usersForm.CreatedAtField = CreatedAtField;
+    
+
+        const UpdatedAtField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <DateInput 
+          form={form} 
+          name="updatedAt" 
+          label="UpdatedAt"
+        />
+        );
+        };
+        UpdatedAtField.displayName = "usersForm.UpdatedAtField";
+        usersForm.UpdatedAtField = UpdatedAtField;
+    
+
+        const LastLoginAtField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <DateInput 
+          form={form} 
+          name="lastLoginAt" 
+          label="LastLoginAt"
+        />
+        );
+        };
+        LastLoginAtField.displayName = "usersForm.LastLoginAtField";
+        usersForm.LastLoginAtField = LastLoginAtField;
+    
+
+        const EnableRLSField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="enableRLS" 
+            label="EnableRLS"
+            placeholder="Enter enableRLS"
+            
+            />
+        );
+        };
+        EnableRLSField.displayName = "usersForm.EnableRLSField";
+        usersForm.EnableRLSField = EnableRLSField;
+    
+
+export default usersForm;

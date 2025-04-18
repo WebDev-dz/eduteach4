@@ -1,240 +1,126 @@
 import { FormFields } from "@/types/ui";
 import { defaultValues } from "@/lib/consts";
-import { FormField, FormItem, FormLabel, FormDescription, FormMessage, FormControl } from "@/components/ui";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+import React from "react";
+import { BaseInputProps, StringInput, SelectInput, NumberInput, TextInput, CheckboxInput, DateInput } from "../form-inputs";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
+interface subscriptionsFieldProps extends BaseInputProps {
+  data?: {[key in keyof EntityFormData]?: EntityFormData[key]};
+}
 type EntityFormData = typeof defaultValues.subscriptions.insert;
 
-const subscriptionsFields: Omit<FormFields<EntityFormData>, "IdField | UserIdField | OrganizationIdField | StripeCustomerIdField | StripeSubscriptionIdField"> = {
-
-    PlanField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="plan"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="plan">Plan</FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger id="plan">
-                      <SelectValue placeholder="Select plan" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      
-            <SelectItem value="starter">Starter</SelectItem>
-                      
-            <SelectItem value="professional">Professional</SelectItem>
-                      
-            <SelectItem value="school">School</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    StatusField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="status"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="status">Status</FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger id="status">
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      
-            <SelectItem value="active">Active</SelectItem>
-                      
-            <SelectItem value="canceled">Canceled</SelectItem>
-                      
-            <SelectItem value="incomplete">Incomplete</SelectItem>
-                      
-            <SelectItem value="incomplete_expired">Incomplete Expired</SelectItem>
-                      
-            <SelectItem value="past_due">Past Due</SelectItem>
-                      
-            <SelectItem value="trialing">Trialing</SelectItem>
-                      
-            <SelectItem value="unpaid">Unpaid</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    CurrentPeriodStartField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="currentPeriodStart"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="currentPeriodStart">CurrentPeriodStart</FormLabel>
-                <FormControl>
-                  <Input
-                    id="currentPeriodStart"
-                    type="date"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter currentPeriodStart"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    CurrentPeriodEndField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="currentPeriodEnd"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="currentPeriodEnd">CurrentPeriodEnd</FormLabel>
-                <FormControl>
-                  <Input
-                    id="currentPeriodEnd"
-                    type="date"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter currentPeriodEnd"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    CancelAtPeriodEndField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="cancelAtPeriodEnd"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <FormControl>
-                    <Checkbox
-                      id="cancelAtPeriodEnd"
-                      checked={field.value ?? false}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel htmlFor="cancelAtPeriodEnd">CancelAtPeriodEnd</FormLabel>
-                </div>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    CreatedAtField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="createdAt"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="createdAt">CreatedAt</FormLabel>
-                <FormControl>
-                  <Input
-                    id="createdAt"
-                    type="date"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter createdAt"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    UpdatedAtField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="updatedAt"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="updatedAt">UpdatedAt</FormLabel>
-                <FormControl>
-                  <Input
-                    id="updatedAt"
-                    type="date"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter updatedAt"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    EnableRLSField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="enableRLS"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="enableRLS">EnableRLS</FormLabel>
-                <FormControl>
-                  <Input
-                    id="enableRLS"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter enableRLS"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
+const subscriptionsForm = () => {
+  return;
 };
 
-// Export all individual fields for direct imports
-export const {
-  PlanField,
-  StatusField,
-  CurrentPeriodStartField,
-  CurrentPeriodEndField,
-  CancelAtPeriodEndField,
-  CreatedAtField,
-  UpdatedAtField,
-  EnableRLSField,
-} = subscriptionsFields;
+
+        const PlanField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <SelectInput
+            form={form}
+            name="plan"
+            label="Plan"
+            options={[{ value: "starter", label: "Starter" }, { value: "professional", label: "Professional" }, { value: "school", label: "School" }]}
+            placeholder="Select plan"
+          />
+        );
+        };
+        PlanField.displayName = "subscriptionsForm.PlanField";
+        subscriptionsForm.PlanField = PlanField;
+    
+
+        const StatusField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <SelectInput
+            form={form}
+            name="status"
+            label="Status"
+            options={[{ value: "active", label: "Active" }, { value: "canceled", label: "Canceled" }, { value: "incomplete", label: "Incomplete" }, { value: "incomplete_expired", label: "Incomplete Expired" }, { value: "past_due", label: "Past Due" }, { value: "trialing", label: "Trialing" }, { value: "unpaid", label: "Unpaid" }]}
+            placeholder="Select status"
+          />
+        );
+        };
+        StatusField.displayName = "subscriptionsForm.StatusField";
+        subscriptionsForm.StatusField = StatusField;
+    
+
+        const CurrentPeriodStartField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <DateInput 
+          form={form} 
+          name="currentPeriodStart" 
+          label="CurrentPeriodStart"
+        />
+        );
+        };
+        CurrentPeriodStartField.displayName = "subscriptionsForm.CurrentPeriodStartField";
+        subscriptionsForm.CurrentPeriodStartField = CurrentPeriodStartField;
+    
+
+        const CurrentPeriodEndField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <DateInput 
+          form={form} 
+          name="currentPeriodEnd" 
+          label="CurrentPeriodEnd"
+        />
+        );
+        };
+        CurrentPeriodEndField.displayName = "subscriptionsForm.CurrentPeriodEndField";
+        subscriptionsForm.CurrentPeriodEndField = CurrentPeriodEndField;
+    
+
+        const CancelAtPeriodEndField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <CheckboxInput 
+            form={form} 
+            name="cancelAtPeriodEnd" 
+            label="CancelAtPeriodEnd"
+          />
+        );
+        };
+        CancelAtPeriodEndField.displayName = "subscriptionsForm.CancelAtPeriodEndField";
+        subscriptionsForm.CancelAtPeriodEndField = CancelAtPeriodEndField;
+    
+
+        const CreatedAtField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <DateInput 
+          form={form} 
+          name="createdAt" 
+          label="CreatedAt"
+        />
+        );
+        };
+        CreatedAtField.displayName = "subscriptionsForm.CreatedAtField";
+        subscriptionsForm.CreatedAtField = CreatedAtField;
+    
+
+        const UpdatedAtField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <DateInput 
+          form={form} 
+          name="updatedAt" 
+          label="UpdatedAt"
+        />
+        );
+        };
+        UpdatedAtField.displayName = "subscriptionsForm.UpdatedAtField";
+        subscriptionsForm.UpdatedAtField = UpdatedAtField;
+    
+
+        const EnableRLSField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="enableRLS" 
+            label="EnableRLS"
+            placeholder="Enter enableRLS"
+            
+            />
+        );
+        };
+        EnableRLSField.displayName = "subscriptionsForm.EnableRLSField";
+        subscriptionsForm.EnableRLSField = EnableRLSField;
+    
+
+export default subscriptionsForm;

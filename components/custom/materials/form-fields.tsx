@@ -1,378 +1,218 @@
 import { FormFields } from "@/types/ui";
 import { defaultValues } from "@/lib/consts";
-import { FormField, FormItem, FormLabel, FormDescription, FormMessage, FormControl } from "@/components/ui";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
+import React from "react";
+import { BaseInputProps, StringInput, SelectInput, NumberInput, TextInput, CheckboxInput, DateInput } from "../form-inputs";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
+interface materialsFieldProps extends BaseInputProps {
+  data?: {[key in keyof EntityFormData]?: EntityFormData[key]};
+}
 type EntityFormData = typeof defaultValues.materials.insert;
 
-const materialsFields: Omit<FormFields<EntityFormData>, "IdField | ClassIdField | TeacherIdField | OrganizationIdField"> = {
-
-    NameField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="name">Name</FormLabel>
-                <FormControl>
-                  <Input
-                    id="name"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter name"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    TypeField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="type"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="type">Type</FormLabel>
-                <FormControl>
-                  <Input
-                    id="type"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter type"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    SubjectField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="subject"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="subject">Subject</FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger id="subject">
-                      <SelectValue placeholder="Select subject" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      
-            <SelectItem value="mathematics">Mathematics</SelectItem>
-                      
-            <SelectItem value="science">Science</SelectItem>
-                      
-            <SelectItem value="english">English</SelectItem>
-                      
-            <SelectItem value="history">History</SelectItem>
-                      
-            <SelectItem value="geography">Geography</SelectItem>
-                      
-            <SelectItem value="art">Art</SelectItem>
-                      
-            <SelectItem value="music">Music</SelectItem>
-                      
-            <SelectItem value="physical_education">Physical Education</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    GradeLevelField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="gradeLevel"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="gradeLevel">GradeLevel</FormLabel>
-                <FormControl>
-                  <Input
-                    id="gradeLevel"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter gradeLevel"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    DescriptionField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="description">Description</FormLabel>
-                <FormControl>
-                  <Textarea
-                    id="description"
-                    rows="3"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter description"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    FileUrlField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="fileUrl"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="fileUrl">FileUrl</FormLabel>
-                <FormControl>
-                  <Input
-                    id="fileUrl"
-                    type="url"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter fileUrl"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    FileSizeField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="fileSize"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="fileSize">FileSize</FormLabel>
-                <FormControl>
-                  <Input
-                    id="fileSize"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter fileSize"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    FileTypeField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="fileType"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="fileType">FileType</FormLabel>
-                <FormControl>
-                  <Input
-                    id="fileType"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter fileType"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    ShareWithStudentsField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="shareWithStudents"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <FormControl>
-                    <Checkbox
-                      id="shareWithStudents"
-                      checked={field.value ?? false}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel htmlFor="shareWithStudents">ShareWithStudents</FormLabel>
-                </div>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    ShareWithTeachersField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="shareWithTeachers"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <FormControl>
-                    <Checkbox
-                      id="shareWithTeachers"
-                      checked={field.value ?? false}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel htmlFor="shareWithTeachers">ShareWithTeachers</FormLabel>
-                </div>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    TagsField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="tags"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="tags">Tags</FormLabel>
-                <FormControl>
-                  <Textarea
-                    id="tags"
-                    rows="3"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter tags"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    CreatedAtField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="createdAt"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="createdAt">CreatedAt</FormLabel>
-                <FormControl>
-                  <Input
-                    id="createdAt"
-                    type="date"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter createdAt"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    UpdatedAtField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="updatedAt"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="updatedAt">UpdatedAt</FormLabel>
-                <FormControl>
-                  <Input
-                    id="updatedAt"
-                    type="date"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter updatedAt"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    EnableRLSField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="enableRLS"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="enableRLS">EnableRLS</FormLabel>
-                <FormControl>
-                  <Input
-                    id="enableRLS"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter enableRLS"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
+const materialsForm = () => {
+  return;
 };
 
-// Export all individual fields for direct imports
-export const {
-  NameField,
-  TypeField,
-  SubjectField,
-  GradeLevelField,
-  DescriptionField,
-  FileUrlField,
-  FileSizeField,
-  FileTypeField,
-  ShareWithStudentsField,
-  ShareWithTeachersField,
-  TagsField,
-  CreatedAtField,
-  UpdatedAtField,
-  EnableRLSField,
-} = materialsFields;
+
+        const NameField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="name" 
+            label="Name"
+            placeholder="Enter name"
+            
+            />
+        );
+        };
+        NameField.displayName = "materialsForm.NameField";
+        materialsForm.NameField = NameField;
+    
+
+        const TypeField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="type" 
+            label="Type"
+            placeholder="Enter type"
+            
+            />
+        );
+        };
+        TypeField.displayName = "materialsForm.TypeField";
+        materialsForm.TypeField = TypeField;
+    
+
+        const SubjectField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <SelectInput
+            form={form}
+            name="subject"
+            label="Subject"
+            options={[{ value: "mathematics", label: "Mathematics" }, { value: "science", label: "Science" }, { value: "english", label: "English" }, { value: "history", label: "History" }, { value: "geography", label: "Geography" }, { value: "art", label: "Art" }, { value: "music", label: "Music" }, { value: "physical_education", label: "Physical Education" }]}
+            placeholder="Select subject"
+          />
+        );
+        };
+        SubjectField.displayName = "materialsForm.SubjectField";
+        materialsForm.SubjectField = SubjectField;
+    
+
+        const GradeLevelField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="gradeLevel" 
+            label="GradeLevel"
+            placeholder="Enter gradeLevel"
+            
+            />
+        );
+        };
+        GradeLevelField.displayName = "materialsForm.GradeLevelField";
+        materialsForm.GradeLevelField = GradeLevelField;
+    
+
+        const DescriptionField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <TextInput 
+            form={form} 
+            name="description" 
+            label="Description"
+            placeholder="Enter description"
+            rows={3}
+          />
+        );
+        };
+        DescriptionField.displayName = "materialsForm.DescriptionField";
+        materialsForm.DescriptionField = DescriptionField;
+    
+
+        const FileUrlField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="fileUrl" 
+            label="FileUrl"
+            placeholder="Enter fileUrl"
+            
+            />
+        );
+        };
+        FileUrlField.displayName = "materialsForm.FileUrlField";
+        materialsForm.FileUrlField = FileUrlField;
+    
+
+        const FileSizeField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="fileSize" 
+            label="FileSize"
+            placeholder="Enter fileSize"
+            
+            />
+        );
+        };
+        FileSizeField.displayName = "materialsForm.FileSizeField";
+        materialsForm.FileSizeField = FileSizeField;
+    
+
+        const FileTypeField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="fileType" 
+            label="FileType"
+            placeholder="Enter fileType"
+            
+            />
+        );
+        };
+        FileTypeField.displayName = "materialsForm.FileTypeField";
+        materialsForm.FileTypeField = FileTypeField;
+    
+
+        const ShareWithStudentsField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <CheckboxInput 
+            form={form} 
+            name="shareWithStudents" 
+            label="ShareWithStudents"
+          />
+        );
+        };
+        ShareWithStudentsField.displayName = "materialsForm.ShareWithStudentsField";
+        materialsForm.ShareWithStudentsField = ShareWithStudentsField;
+    
+
+        const ShareWithTeachersField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <CheckboxInput 
+            form={form} 
+            name="shareWithTeachers" 
+            label="ShareWithTeachers"
+          />
+        );
+        };
+        ShareWithTeachersField.displayName = "materialsForm.ShareWithTeachersField";
+        materialsForm.ShareWithTeachersField = ShareWithTeachersField;
+    
+
+        const TagsField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <TextInput 
+            form={form} 
+            name="tags" 
+            label="Tags"
+            placeholder="Enter tags"
+            rows={3}
+          />
+        );
+        };
+        TagsField.displayName = "materialsForm.TagsField";
+        materialsForm.TagsField = TagsField;
+    
+
+        const CreatedAtField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <DateInput 
+          form={form} 
+          name="createdAt" 
+          label="CreatedAt"
+        />
+        );
+        };
+        CreatedAtField.displayName = "materialsForm.CreatedAtField";
+        materialsForm.CreatedAtField = CreatedAtField;
+    
+
+        const UpdatedAtField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <DateInput 
+          form={form} 
+          name="updatedAt" 
+          label="UpdatedAt"
+        />
+        );
+        };
+        UpdatedAtField.displayName = "materialsForm.UpdatedAtField";
+        materialsForm.UpdatedAtField = UpdatedAtField;
+    
+
+        const EnableRLSField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="enableRLS" 
+            label="EnableRLS"
+            placeholder="Enter enableRLS"
+            
+            />
+        );
+        };
+        EnableRLSField.displayName = "materialsForm.EnableRLSField";
+        materialsForm.EnableRLSField = EnableRLSField;
+    
+
+export default materialsForm;

@@ -1,109 +1,74 @@
 import { FormFields } from "@/types/ui";
 import { defaultValues } from "@/lib/consts";
-import { FormField, FormItem, FormLabel, FormDescription, FormMessage, FormControl } from "@/components/ui";
-import { Input } from "@/components/ui/input";
+import React from "react";
+import { BaseInputProps, StringInput, SelectInput, NumberInput, TextInput, CheckboxInput, DateInput } from "../form-inputs";
 
+interface verificationTokensFieldProps extends BaseInputProps {
+  data?: {[key in keyof EntityFormData]?: EntityFormData[key]};
+}
 type EntityFormData = typeof defaultValues.verificationTokens.insert;
 
-const verificationTokensFields: FormFields<EntityFormData> = {
-
-    IdentifierField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="identifier"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="identifier">Identifier</FormLabel>
-                <FormControl>
-                  <Input
-                    id="identifier"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter identifier"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    TokenField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="token"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="token">Token</FormLabel>
-                <FormControl>
-                  <Input
-                    id="token"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter token"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    ExpiresField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="expires"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="expires">Expires</FormLabel>
-                <FormControl>
-                  <Input
-                    id="expires"
-                    type="date"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter expires"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    EnableRLSField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="enableRLS"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="enableRLS">EnableRLS</FormLabel>
-                <FormControl>
-                  <Input
-                    id="enableRLS"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter enableRLS"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
+const verificationTokensForm = () => {
+  return;
 };
 
-// Export all individual fields for direct imports
-export const {
-  IdentifierField,
-  TokenField,
-  ExpiresField,
-  EnableRLSField,
-} = verificationTokensFields;
+
+        const IdentifierField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="identifier" 
+            label="Identifier"
+            placeholder="Enter identifier"
+            
+            />
+        );
+        };
+        IdentifierField.displayName = "verificationTokensForm.IdentifierField";
+        verificationTokensForm.IdentifierField = IdentifierField;
+    
+
+        const TokenField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="token" 
+            label="Token"
+            placeholder="Enter token"
+            
+            />
+        );
+        };
+        TokenField.displayName = "verificationTokensForm.TokenField";
+        verificationTokensForm.TokenField = TokenField;
+    
+
+        const ExpiresField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <DateInput 
+          form={form} 
+          name="expires" 
+          label="Expires"
+        />
+        );
+        };
+        ExpiresField.displayName = "verificationTokensForm.ExpiresField";
+        verificationTokensForm.ExpiresField = ExpiresField;
+    
+
+        const EnableRLSField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="enableRLS" 
+            label="EnableRLS"
+            placeholder="Enter enableRLS"
+            
+            />
+        );
+        };
+        EnableRLSField.displayName = "verificationTokensForm.EnableRLSField";
+        verificationTokensForm.EnableRLSField = EnableRLSField;
+    
+
+export default verificationTokensForm;

@@ -1,391 +1,221 @@
 import { FormFields } from "@/types/ui";
 import { defaultValues } from "@/lib/consts";
-import { FormField, FormItem, FormLabel, FormDescription, FormMessage, FormControl } from "@/components/ui";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+import React from "react";
+import { BaseInputProps, StringInput, SelectInput, NumberInput, TextInput, CheckboxInput, DateInput } from "../form-inputs";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
+interface featureLimitsFieldProps extends BaseInputProps {
+  data?: {[key in keyof EntityFormData]?: EntityFormData[key]};
+}
 type EntityFormData = typeof defaultValues.featureLimits.insert;
 
-const featureLimitsFields: Omit<FormFields<EntityFormData>, "IdField"> = {
-
-    PlanField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="plan"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="plan">Plan</FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger id="plan">
-                      <SelectValue placeholder="Select plan" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      
-            <SelectItem value="starter">Starter</SelectItem>
-                      
-            <SelectItem value="professional">Professional</SelectItem>
-                      
-            <SelectItem value="school">School</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    MaxClassesField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="maxClasses"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="maxClasses">MaxClasses</FormLabel>
-                <FormControl>
-                  <Input
-                    id="maxClasses"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter maxClasses"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    MaxStudentsPerClassField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="maxStudentsPerClass"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="maxStudentsPerClass">MaxStudentsPerClass</FormLabel>
-                <FormControl>
-                  <Input
-                    id="maxStudentsPerClass"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter maxStudentsPerClass"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    MaxStorageGBField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="maxStorageGB"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="maxStorageGB">MaxStorageGB</FormLabel>
-                <FormControl>
-                  <Input
-                    id="maxStorageGB"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter maxStorageGB"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    AdvancedGradingField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="advancedGrading"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <FormControl>
-                    <Checkbox
-                      id="advancedGrading"
-                      checked={field.value ?? false}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel htmlFor="advancedGrading">AdvancedGrading</FormLabel>
-                </div>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    LessonPlanningField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="lessonPlanning"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <FormControl>
-                    <Checkbox
-                      id="lessonPlanning"
-                      checked={field.value ?? false}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel htmlFor="lessonPlanning">LessonPlanning</FormLabel>
-                </div>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    StudentAnalyticsField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="studentAnalytics"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <FormControl>
-                    <Checkbox
-                      id="studentAnalytics"
-                      checked={field.value ?? false}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel htmlFor="studentAnalytics">StudentAnalytics</FormLabel>
-                </div>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    ParentCommunicationField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="parentCommunication"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <FormControl>
-                    <Checkbox
-                      id="parentCommunication"
-                      checked={field.value ?? false}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel htmlFor="parentCommunication">ParentCommunication</FormLabel>
-                </div>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    AdminDashboardField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="adminDashboard"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <FormControl>
-                    <Checkbox
-                      id="adminDashboard"
-                      checked={field.value ?? false}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel htmlFor="adminDashboard">AdminDashboard</FormLabel>
-                </div>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    DepartmentAnalyticsField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="departmentAnalytics"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <FormControl>
-                    <Checkbox
-                      id="departmentAnalytics"
-                      checked={field.value ?? false}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel htmlFor="departmentAnalytics">DepartmentAnalytics</FormLabel>
-                </div>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    CustomIntegrationsField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="customIntegrations"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <FormControl>
-                    <Checkbox
-                      id="customIntegrations"
-                      checked={field.value ?? false}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel htmlFor="customIntegrations">CustomIntegrations</FormLabel>
-                </div>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    PrioritySupportField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="prioritySupport"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <FormControl>
-                    <Checkbox
-                      id="prioritySupport"
-                      checked={field.value ?? false}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel htmlFor="prioritySupport">PrioritySupport</FormLabel>
-                </div>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    CreatedAtField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="createdAt"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="createdAt">CreatedAt</FormLabel>
-                <FormControl>
-                  <Input
-                    id="createdAt"
-                    type="date"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter createdAt"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    UpdatedAtField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="updatedAt"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="updatedAt">UpdatedAt</FormLabel>
-                <FormControl>
-                  <Input
-                    id="updatedAt"
-                    type="date"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter updatedAt"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    EnableRLSField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="enableRLS"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="enableRLS">EnableRLS</FormLabel>
-                <FormControl>
-                  <Input
-                    id="enableRLS"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter enableRLS"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
+const featureLimitsForm = () => {
+  return;
 };
 
-// Export all individual fields for direct imports
-export const {
-  PlanField,
-  MaxClassesField,
-  MaxStudentsPerClassField,
-  MaxStorageGBField,
-  AdvancedGradingField,
-  LessonPlanningField,
-  StudentAnalyticsField,
-  ParentCommunicationField,
-  AdminDashboardField,
-  DepartmentAnalyticsField,
-  CustomIntegrationsField,
-  PrioritySupportField,
-  CreatedAtField,
-  UpdatedAtField,
-  EnableRLSField,
-} = featureLimitsFields;
+
+        const PlanField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <SelectInput
+            form={form}
+            name="plan"
+            label="Plan"
+            options={[{ value: "starter", label: "Starter" }, { value: "professional", label: "Professional" }, { value: "school", label: "School" }]}
+            placeholder="Select plan"
+          />
+        );
+        };
+        PlanField.displayName = "featureLimitsForm.PlanField";
+        featureLimitsForm.PlanField = PlanField;
+    
+
+        const MaxClassesField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="maxClasses" 
+            label="MaxClasses"
+            placeholder="Enter maxClasses"
+            
+            />
+        );
+        };
+        MaxClassesField.displayName = "featureLimitsForm.MaxClassesField";
+        featureLimitsForm.MaxClassesField = MaxClassesField;
+    
+
+        const MaxStudentsPerClassField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="maxStudentsPerClass" 
+            label="MaxStudentsPerClass"
+            placeholder="Enter maxStudentsPerClass"
+            
+            />
+        );
+        };
+        MaxStudentsPerClassField.displayName = "featureLimitsForm.MaxStudentsPerClassField";
+        featureLimitsForm.MaxStudentsPerClassField = MaxStudentsPerClassField;
+    
+
+        const MaxStorageGBField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="maxStorageGB" 
+            label="MaxStorageGB"
+            placeholder="Enter maxStorageGB"
+            
+            />
+        );
+        };
+        MaxStorageGBField.displayName = "featureLimitsForm.MaxStorageGBField";
+        featureLimitsForm.MaxStorageGBField = MaxStorageGBField;
+    
+
+        const AdvancedGradingField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <CheckboxInput 
+            form={form} 
+            name="advancedGrading" 
+            label="AdvancedGrading"
+          />
+        );
+        };
+        AdvancedGradingField.displayName = "featureLimitsForm.AdvancedGradingField";
+        featureLimitsForm.AdvancedGradingField = AdvancedGradingField;
+    
+
+        const LessonPlanningField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <CheckboxInput 
+            form={form} 
+            name="lessonPlanning" 
+            label="LessonPlanning"
+          />
+        );
+        };
+        LessonPlanningField.displayName = "featureLimitsForm.LessonPlanningField";
+        featureLimitsForm.LessonPlanningField = LessonPlanningField;
+    
+
+        const StudentAnalyticsField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <CheckboxInput 
+            form={form} 
+            name="studentAnalytics" 
+            label="StudentAnalytics"
+          />
+        );
+        };
+        StudentAnalyticsField.displayName = "featureLimitsForm.StudentAnalyticsField";
+        featureLimitsForm.StudentAnalyticsField = StudentAnalyticsField;
+    
+
+        const ParentCommunicationField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <CheckboxInput 
+            form={form} 
+            name="parentCommunication" 
+            label="ParentCommunication"
+          />
+        );
+        };
+        ParentCommunicationField.displayName = "featureLimitsForm.ParentCommunicationField";
+        featureLimitsForm.ParentCommunicationField = ParentCommunicationField;
+    
+
+        const AdminDashboardField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <CheckboxInput 
+            form={form} 
+            name="adminDashboard" 
+            label="AdminDashboard"
+          />
+        );
+        };
+        AdminDashboardField.displayName = "featureLimitsForm.AdminDashboardField";
+        featureLimitsForm.AdminDashboardField = AdminDashboardField;
+    
+
+        const DepartmentAnalyticsField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <CheckboxInput 
+            form={form} 
+            name="departmentAnalytics" 
+            label="DepartmentAnalytics"
+          />
+        );
+        };
+        DepartmentAnalyticsField.displayName = "featureLimitsForm.DepartmentAnalyticsField";
+        featureLimitsForm.DepartmentAnalyticsField = DepartmentAnalyticsField;
+    
+
+        const CustomIntegrationsField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <CheckboxInput 
+            form={form} 
+            name="customIntegrations" 
+            label="CustomIntegrations"
+          />
+        );
+        };
+        CustomIntegrationsField.displayName = "featureLimitsForm.CustomIntegrationsField";
+        featureLimitsForm.CustomIntegrationsField = CustomIntegrationsField;
+    
+
+        const PrioritySupportField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <CheckboxInput 
+            form={form} 
+            name="prioritySupport" 
+            label="PrioritySupport"
+          />
+        );
+        };
+        PrioritySupportField.displayName = "featureLimitsForm.PrioritySupportField";
+        featureLimitsForm.PrioritySupportField = PrioritySupportField;
+    
+
+        const CreatedAtField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <DateInput 
+          form={form} 
+          name="createdAt" 
+          label="CreatedAt"
+        />
+        );
+        };
+        CreatedAtField.displayName = "featureLimitsForm.CreatedAtField";
+        featureLimitsForm.CreatedAtField = CreatedAtField;
+    
+
+        const UpdatedAtField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <DateInput 
+          form={form} 
+          name="updatedAt" 
+          label="UpdatedAt"
+        />
+        );
+        };
+        UpdatedAtField.displayName = "featureLimitsForm.UpdatedAtField";
+        featureLimitsForm.UpdatedAtField = UpdatedAtField;
+    
+
+        const EnableRLSField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="enableRLS" 
+            label="EnableRLS"
+            placeholder="Enter enableRLS"
+            
+            />
+        );
+        };
+        EnableRLSField.displayName = "featureLimitsForm.EnableRLSField";
+        featureLimitsForm.EnableRLSField = EnableRLSField;
+    
+
+export default featureLimitsForm;

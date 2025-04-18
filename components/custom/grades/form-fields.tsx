@@ -1,157 +1,102 @@
 import { FormFields } from "@/types/ui";
 import { defaultValues } from "@/lib/consts";
-import { FormField, FormItem, FormLabel, FormDescription, FormMessage, FormControl } from "@/components/ui";
-import { Input } from "@/components/ui/input";
+import React from "react";
+import { BaseInputProps, StringInput, SelectInput, NumberInput, TextInput, CheckboxInput, DateInput } from "../form-inputs";
 
+interface gradesFieldProps extends BaseInputProps {
+  data?: {[key in keyof EntityFormData]?: EntityFormData[key]};
+}
 type EntityFormData = typeof defaultValues.grades.insert;
 
-const gradesFields: Omit<FormFields<EntityFormData>, "IdField | StudentIdField | ClassIdField | AssignmentIdField | TeacherIdField"> = {
-
-    ScoreField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="score"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="score">Score</FormLabel>
-                <FormControl>
-                  <Input
-                    id="score"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter score"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    MaxScoreField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="maxScore"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="maxScore">MaxScore</FormLabel>
-                <FormControl>
-                  <Input
-                    id="maxScore"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter maxScore"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    CommentsField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="comments"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="comments">Comments</FormLabel>
-                <FormControl>
-                  <Input
-                    id="comments"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter comments"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    CreatedAtField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="createdAt"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="createdAt">CreatedAt</FormLabel>
-                <FormControl>
-                  <Input
-                    id="createdAt"
-                    type="date"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter createdAt"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    UpdatedAtField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="updatedAt"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="updatedAt">UpdatedAt</FormLabel>
-                <FormControl>
-                  <Input
-                    id="updatedAt"
-                    type="date"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter updatedAt"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
-
-    EnableRLSField: ({ form, data }): React.ReactNode => {
-      return (<FormField
-            control={form.control}
-            name="enableRLS"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel htmlFor="enableRLS">EnableRLS</FormLabel>
-                <FormControl>
-                  <Input
-                    id="enableRLS"
-                    type="text"
-                    {...field}
-                    value={field.value ?? ""}
-                    placeholder="Enter enableRLS"
-                  />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />);
-    },
+const gradesForm = () => {
+  return;
 };
 
-// Export all individual fields for direct imports
-export const {
-  ScoreField,
-  MaxScoreField,
-  CommentsField,
-  CreatedAtField,
-  UpdatedAtField,
-  EnableRLSField,
-} = gradesFields;
+
+        const ScoreField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="score" 
+            label="Score"
+            placeholder="Enter score"
+            
+            />
+        );
+        };
+        ScoreField.displayName = "gradesForm.ScoreField";
+        gradesForm.ScoreField = ScoreField;
+    
+
+        const MaxScoreField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="maxScore" 
+            label="MaxScore"
+            placeholder="Enter maxScore"
+            
+            />
+        );
+        };
+        MaxScoreField.displayName = "gradesForm.MaxScoreField";
+        gradesForm.MaxScoreField = MaxScoreField;
+    
+
+        const CommentsField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="comments" 
+            label="Comments"
+            placeholder="Enter comments"
+            
+            />
+        );
+        };
+        CommentsField.displayName = "gradesForm.CommentsField";
+        gradesForm.CommentsField = CommentsField;
+    
+
+        const CreatedAtField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <DateInput 
+          form={form} 
+          name="createdAt" 
+          label="CreatedAt"
+        />
+        );
+        };
+        CreatedAtField.displayName = "gradesForm.CreatedAtField";
+        gradesForm.CreatedAtField = CreatedAtField;
+    
+
+        const UpdatedAtField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <DateInput 
+          form={form} 
+          name="updatedAt" 
+          label="UpdatedAt"
+        />
+        );
+        };
+        UpdatedAtField.displayName = "gradesForm.UpdatedAtField";
+        gradesForm.UpdatedAtField = UpdatedAtField;
+    
+
+        const EnableRLSField = ({ form, data, ...props }: ClassFieldProps) => {
+        return (
+            <StringInput 
+            form={form} 
+            name="enableRLS" 
+            label="EnableRLS"
+            placeholder="Enter enableRLS"
+            
+            />
+        );
+        };
+        EnableRLSField.displayName = "gradesForm.EnableRLSField";
+        gradesForm.EnableRLSField = EnableRLSField;
+    
+
+export default gradesForm;
