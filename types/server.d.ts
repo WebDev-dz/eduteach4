@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 import { db } from "@/lib/db";
 
 export type ServerGetter = {

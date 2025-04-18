@@ -1,8 +1,4 @@
-import { nextAuthSchema, organizations, users, accounts, sessions, verificationTokens, subscriptions, featureLimits, classes, students, classStudents, assignments, assignmentSubmissions, grades, materials, lessonPlans, calendarEvents } from "@/db/schema";
-
-export type NextAuthSchema = typeof nextAuthSchema.$inferSelect;
-export type NextAuthSchemaCreateInput = typeof nextAuthSchema.$inferInsert;
-export type NextAuthSchemaUpdateInput = typeof nextAuthSchema.$inferSelect;
+import { organizations, users, accounts, sessions, verificationTokens, subscriptions, featureLimits, classes, students, classStudents, assignments, assignmentSubmissions, grades, materials, lessonPlans, calendarEvents } from "@/db/schema";
 
 export type Organizations = typeof organizations.$inferSelect;
 export type OrganizationsCreateInput = typeof organizations.$inferInsert;
