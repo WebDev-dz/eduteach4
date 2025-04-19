@@ -5,7 +5,7 @@ const path = require("path");
 
 // Replace with the path to your schema file
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const tables = require("../db/schema/tables.js");
+const tables = require("../db/schema/tables");
 
 const componentsDir = path.resolve("components/shared");
 const outputFile = path.join(componentsDir, "entity-selector.tsx");
