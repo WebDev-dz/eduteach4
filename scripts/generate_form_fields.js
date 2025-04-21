@@ -4,9 +4,15 @@ const fs = require("fs");
 const path = require("path");
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const tables = require("../db/schema/tables.js");
-const { TableAliasProxyHandler } = require("drizzle-orm");
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+// const { TableAliasProxyHandler } = require("drizzle-orm");
 
 const componentsBaseDir = path.resolve("components", "custom");
+
+function pascalCase(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 
 function ensureDir(dir) {
   if (!fs.existsSync(dir)) {
@@ -98,6 +104,7 @@ const knownEnumOptions = {
 
 function getFieldComponent(columnName, column, entityName) {
   // First check for enum values in the column
+  console.log(entityName)
   if (column.enumValues) {
     return {
       component: "SelectInput",
@@ -156,10 +163,9 @@ function generateFormFields(entityName, columns) {
 
   // Track required imports
   const imports = new Set([
-    `import { FormFields } from "@/types/ui";`,
-    `import { defaultValues } from "@/lib/consts";`,
+    `import { defaultValues } from "@/lib/consts/defaultValues";`,
     `import React from "react";` ,
-    `import { BaseInputProps, StringInput, SelectInput, NumberInput, TextInput, CheckboxInput, DateInput } from "../form-inputs";`,
+    `import { BaseInputProps, StringInput, SelectInput, NumberInput, TextInput, CheckboxInput, DateInput } from "@/components/shared/form-inputs";`,
   ]);
 
   // Track used components
@@ -183,8 +189,8 @@ function generateFormFields(entityName, columns) {
         fieldContent = `
           <StringInput 
             form={form} 
-            name="${columnName}" 
-            label="${columnName[0].toUpperCase() + columnName.slice(1)}"
+            name= {name} 
+             label={label}
             placeholder="Enter ${columnName}"
             ${Object.entries(fieldConfig.props)
               .map(([key, value]) => `${key}={${JSON.stringify(value)}}`)
@@ -195,8 +201,8 @@ function generateFormFields(entityName, columns) {
         fieldContent = `
         <TextInput 
             form={form} 
-            name="${columnName}" 
-            label="${columnName[0].toUpperCase() + columnName.slice(1)}"
+            name= {name} 
+             label={label}
             placeholder="Enter ${columnName}"
             ${Object.entries(fieldConfig.props)
               .map(([key, value]) => `${key}={${JSON.stringify(value)}}`)
@@ -207,8 +213,8 @@ function generateFormFields(entityName, columns) {
         fieldContent = `
           <CheckboxInput 
             form={form} 
-            name="${columnName}" 
-            label="${columnName[0].toUpperCase() + columnName.slice(1)}"
+            name= {name} 
+             label={label}
           />
         `;
       } else if (fieldConfig.component === "SelectInput") {
@@ -221,7 +227,7 @@ function generateFormFields(entityName, columns) {
          <SelectInput
             form={form}
             name="${columnName}"
-            label="${columnName[0].toUpperCase() + columnName.slice(1)}"
+             label={label}
             options={[${selectItems.join(", ")}]}
             placeholder="Select ${columnName}"
           />
@@ -230,8 +236,8 @@ function generateFormFields(entityName, columns) {
         fieldContent = `
           <NumberInput 
             form={form} 
-            name="${columnName}" 
-            label="${columnName[0].toUpperCase() + columnName.slice(1)}"
+            name= {name} 
+             label={label}
             placeholder="Enter ${columnName}"
             ${Object.entries(fieldConfig.props)
               .map(([key, value]) => `${key}={${JSON.stringify(value)}}`)
@@ -242,20 +248,20 @@ function generateFormFields(entityName, columns) {
         fieldContent = `
         <DateInput 
           form={form} 
-          name="${columnName}" 
-          label="${columnName[0].toUpperCase() + columnName.slice(1)}"
+          name= {name} 
+          label={label}
         />
       `;
       }
 
       return `
-        const ${fieldName} = ({ form, data, ...props }: ClassFieldProps) => {
+        const ${fieldName} = ({ form, data,name="${columnName}" , label="${columnName[0].toUpperCase() + columnName.slice(1)}" }: ${pascalCase(entityName)}FormProps) => {
         return (
             ${fieldContent.trim()}
         );
         };
-        ${fieldName}.displayName = "${entityName}Form.${fieldName}";
-        ${entityName}Form.${fieldName} = ${fieldName};
+        ${fieldName}.displayName = "${pascalCase(entityName)}Form.${fieldName}";
+        ${pascalCase(entityName)}Form.${fieldName} = ${fieldName};
     `;
     })
     .join("\n");
@@ -263,22 +269,22 @@ function generateFormFields(entityName, columns) {
   // Add component imports based on usage
  if (componentsUsed.has("StringInput") || componentsUsed.has("TextInput") || componentsUsed.has("NumberInput") || componentsUsed.has("SelectInput") || componentsUsed.has("CheckboxInput") || componentsUsed.has("DateInput")) {
     imports.add(`
-interface ${entityName}FieldProps extends BaseInputProps {
+interface ${pascalCase(entityName)}FormProps extends BaseInputProps {
   data?: {[key in keyof EntityFormData]?: EntityFormData[key]};
 }`);
   }
   // Generate the file content
   const content = `
 ${Array.from(imports).join("\n")}
-type EntityFormData = typeof defaultValues.${entityName}.insert;
+type EntityFormData = typeof defaultValues.${entityName.slice(0, -1)}.insert;
 
-const ${entityName}Form = () => {
+const ${pascalCase(entityName)}Form = () => {
   return;
 };
 
 ${fieldComponents}
 
-export default ${entityName}Form;
+export default ${pascalCase(entityName)}Form;
 `;
 
   // Write the file

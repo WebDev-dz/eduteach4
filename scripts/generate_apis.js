@@ -1,50 +1,86 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
+/* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require("fs");
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 const path = require("path");
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 const tables = require("../db/schema/tables.js");
 
-const apiBaseDir = path.resolve("app/api");
+// Get entity names from table exports
+const entities = Object.keys(tables);
 
-function pascalCase(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
+// Base directory for API routes
+const apiBasePath = path.resolve(__dirname, "../app/api");
 
-function ensureDir(dir) {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-}
-
-function writeFileIfNotExists(filePath, content) {
-  if (!fs.existsSync(filePath)) {
-    fs.writeFileSync(filePath, content);
-    console.log(`✅ Created ${filePath}`);
-  } else {
-    console.log(`⚠️  Skipped ${filePath} (already exists)`);
-  }
-}
-
-Object.keys(tables).forEach((entity) => {
-  const entityApiDir = path.join(apiBaseDir, entity);
-  ensureDir(entityApiDir);
-
-  const routeContent = `// Auto-generated API route for ${entity}
+// Template for `app/api/{entity}/route.ts`
+const collectionRouteTemplate = (entity) => `import { serverService } from "@/lib/server";
 import { NextResponse } from "next/server";
-// import { getAll${pascalCase(entity)} } from "@/lib/controllers/${entity}";
 
-export async function GET() {
-  // const data = await getAll${pascalCase(entity)}();
-  // return NextResponse.json(data);
-  return NextResponse.json({ message: "GET ${entity}" });
+export async function GET(req) {
+  const searchParams = Object.fromEntries(req.nextUrl.searchParams);
+  const data = await serverService.${entity}.findMany({ where: searchParams });
+  return NextResponse.json(data);
 }
 
-export async function POST(request) {
-  const body = await request.json();
-  return NextResponse.json({ message: "POST ${entity}", data: body });
+export async function POST(req) {
+  const body = await req.json();
+  const data = await serverService.${entity}.create?.(body);
+  return NextResponse.json(data);
+}
+
+export async function PUT(req) {
+  const body = await req.json();
+  const data = await serverService.${entity}.update?.(body);
+  return NextResponse.json(data);
+}
+
+export async function DELETE(req) {
+  const body = await req.json();
+  const data = await serverService.${entity}.delete?.(body);
+  return NextResponse.json(data);
 }
 `;
 
-  writeFileIfNotExists(path.join(entityApiDir, "route.ts"), routeContent);
-});
+// Template for `app/api/{entity}/[id]/route.ts`
+const singleRouteTemplate = (entity) => `import { serverService } from "@/lib/server";
+import { NextResponse } from "next/server";
+
+export async function GET(_, { params }) {
+  const data = await serverService.${entity}.findFirst({
+    where: { id: params.id },
+  });
+  return NextResponse.json(data);
+}
+
+export async function DELETE(_, { params }) {
+  const data = await serverService.${entity}.delete?.({
+    id: params.id,
+  });
+  return NextResponse.json(data);
+}
+`;
+
+function ensureDir(pathname) {
+  if (!fs.existsSync(pathname)) {
+    fs.mkdirSync(pathname, { recursive: true });
+  }
+}
+
+function generateApiRoutes() {
+  ensureDir(apiBasePath);
+
+  entities.forEach((entity) => {
+    const entityPath = path.join(apiBasePath, entity);
+    const idPath = path.join(entityPath, "[id]");
+
+    ensureDir(entityPath);
+    ensureDir(idPath);
+
+    const collectionRoutePath = path.join(entityPath, "route.ts");
+    const idRoutePath = path.join(idPath, "route.ts");
+
+    fs.writeFileSync(collectionRoutePath, collectionRouteTemplate(entity), "utf8");
+    fs.writeFileSync(idRoutePath, singleRouteTemplate(entity), "utf8");
+
+    console.log(`✅ Created API routes for: ${entity}`);
+  });
+}
+
+generateApiRoutes();
